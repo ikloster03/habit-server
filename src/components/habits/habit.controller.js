@@ -1,28 +1,47 @@
-exports.list = (ctx) => {
-  const result = [
-    {
-      id: 'c603530f-f9ed-4056-8d1d-565de26f613a',
-      title: 'test habit 1',
-      description: 'test habit description',
-      color: '#0097A7FF',
-      dates: ['2021-02-01', '2021-02-03'],
-    },
-    {
-      id: 'c603530f-f9ed-4056-8d1d-565de26f613b',
-      title: 'test habit 2',
-      description: 'test habit description',
-      color: '#0097A7FF',
-      dates: ['2021-02-01', '2021-02-03'],
-    },
-    {
-      id: 'c603530f-f9ed-4056-8d1d-565de26f613c',
-      title: 'test habit 3',
-      description: 'test habit description',
-      color: '#0097A7FF',
-      dates: ['2021-02-01', '2021-02-03'],
-    },
-  ];
+const {
+  removeHabit,
+  updateHabit,
+  getHabit,
+  createHabit,
+  getHabitList,
+} = require('./habit.service');
 
+const next = (ctx, payload) => {
   ctx.status = 200;
-  ctx.body = result;
+  ctx.body = payload;
+};
+
+exports.list = async (ctx) => {
+  const habits = await getHabitList();
+
+  next(ctx, habits);
+};
+
+exports.create = async (ctx) => {
+  const body = ctx.request.body;
+  const habit = await createHabit(body);
+
+  next(ctx, habit);
+};
+
+exports.read = async (ctx) => {
+  const id = ctx.params.id;
+  const habit = await getHabit(id);
+
+  next(ctx, habit);
+};
+
+exports.update = async (ctx) => {
+  const id = ctx.params.id;
+  const body = ctx.request.body;
+  const habit = await updateHabit(id, body);
+
+  next(ctx, habit);
+};
+
+exports.remove = async (ctx) => {
+  const id = ctx.params.id;
+  const habit = await removeHabit(id);
+
+  next(ctx, habit);
 };
