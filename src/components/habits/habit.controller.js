@@ -1,3 +1,4 @@
+const { next } = require('../../helpers');
 const {
   removeHabit,
   updateHabit,
@@ -5,11 +6,6 @@ const {
   createHabit,
   getHabitList,
 } = require('./habit.service');
-
-const next = (ctx, payload) => {
-  ctx.status = 200;
-  ctx.body = payload;
-};
 
 exports.list = async (ctx) => {
   const habits = await getHabitList();
